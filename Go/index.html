@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebAssembly</title>
+    <script src="wasm_exec.js"></script>
+</head>
+<body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <div id="content"></div>
+    <input type="hidden" value="jkfl33" id="accountNumber">
+</body>
+<script>
+// GOARCH=wasm GOOS=js go build -o lib.wasm main.go
+// cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" .  
+</script>
+
+</html>

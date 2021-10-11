@@ -1,0 +1,22 @@
+{
+  "name": "@paypalcorp/demo4",
+  "version": "1.0.0",
+  "description": "图片加密",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "as-bind": "^0.8.2",
+    "express": "^4.17.1",
+    "requirejs": "^2.3.6",
+    "wasm2js": "^0.2.0"
+  },
+  "devDependencies": {
+    "@assemblyscript/loader": "^0.19.16",
+    "assemblyscript": "^0.19.16"
+  }
+}

@@ -1,8 +1,13 @@
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const scanvas = document.getElementById('smallcanvas');
+const sctx = scanvas.getContext('2d');
 const width = 640
 const height = 480
+
+scanvas.width = 320
+scanvas.height = 240
 
 canvas.width = width
 canvas.height = height
@@ -89,12 +94,17 @@ document.getElementById("snap").onclick = function () {
     const tempCtx = tempCanvas.getContext("2d")
     tempCanvas.width = width
     tempCanvas.height = height
-    tempCtx.drawImage(video, 0, 0, width, height)
+    // tempCtx.drawImage(video, 0, 0, width, height)
+
+    tempCtx.drawImage(video, 0, 0, width, height, 0, 0, width, height)
     const imageData = tempCtx.getImageData(0, 0, width, height)
     const binaryText = binaryStr(randomStr("img"));
     console.log(randomStr("img"))
     const newOriginData = mergeData(imageData, binaryText, 'G')
+
     ctx.putImageData(newOriginData, 0, 0)
+    
+    sctx.drawImage(video, 0, 0, width, height, 0, 0, width / 2, height / 2)
 }
 
 document.getElementById("decrypt").onclick = function () {

@@ -1,18 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>WebAssembly</title>
+    <script src="adapter-latest.js"></script>
     <script src="wasm_exec.js"></script>
+    <script>
+        const constraints = {
+            audio: false,
+            video: { width: { exact: 640 }, height: { exact: 480 } }
+        };
+
+        function handleSuccess(stream) {
+            window.stream = stream;
+            video.srcObject = stream;
+        }
+
+        function handleError(error) {
+            console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+        }
+
+        navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError);
+
+    </script>
 </head>
+
 <body>
-    <video id="video" width="640" height="480" autoplay></video>
-    <button id="snap">Snap Photo</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <div id="content"></div>
-    <input type="hidden" value="jkfl33" id="accountNumber">
+    <div id="container">
+        <video id="video" autoplay></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
+        <canvas id="smallcanvas"></canvas>
+        <button id="snap">Snap Photo</button>
+        <button id="decrypt">Photo decrypt</button>
+
+    </div>
 </body>
 <script>
+    if (!WebAssembly.instantiateStreaming) {
+        // polyfill
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+            const source = await (await resp).arrayBuffer();
+            return await WebAssembly.instantiate(source, importObject);
+        };
+    }
+
+    const go = new Go();
+    let mod, inst;
+    WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then(
+        async result => {
+            mod = result.module;
+            inst = result.instance;
+            await go.run(inst);
+        }
+    );
+    document.getElementById("snap").onclick = () => {
+        mergeData()
+    }
 // GOARCH=wasm GOOS=js go build -o lib.wasm main.go
 // cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" .  
 </script>
